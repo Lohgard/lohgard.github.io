@@ -1,0 +1,23 @@
+div#header {
+    background: rgb(29,29,29);
+    color: white;
+}
+
+#topics .badge {
+    padding: 10px 25px;
+    border-radius: 44px;
+    cursor: pointer;
+}
+#topics .badge:hover {
+    background: #666666 !important;
+}
+
+#topics .badge-active {
+    background: darkslategray !important;
+    color: black !important;
+}
+
+#footer {
+    margin-top: 20px;
+    border-top: 4px solid #000;
+}

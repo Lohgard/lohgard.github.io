@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>Rechner</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet"href="style.css">
+    <link rel="manifest"href="index.html">
+    <style>
+
+        body{
+            margin: 0 ;
+            font-family: "PT Sans", sans-serif;
+        }
+        table {
+            width: 100% ;
+            height: 70vh;
+            background-color: #000034;
+            color: #850909;
+            font-family: 'PT Sans', sans-serif;
+        }
+        td {
+            width: 25%;
+            text-align: center;
+            background-color: black;
+            font-size:30px;
+        }
+td:hover{background-color: #034281;
+    cursor:pointer;
+}
+#resultArea {
+    height: 30vh;
+    background-color: #11112c;
+    color: #850909;
+    font-size: 64px ;
+    display: flex;
+    justify-content:flex-end;
+    align-items: flex-end;
+    padding: 24px;
+    box-sizing:border-box ;
+}
+#result {
+    word-break: break-all;
+    word-wrap: break-word;
+}
+
+
+    </style>
+
+    <script>
+        function isNotNumeric(value)
+        {
+            return isNaN(parseInt( value ));
+        }
+
+
+
+        function append0peration (operation)
+        {
+            let currentValue = document.getElementById('result').innerHTML;
+            let lastCharacter = currentValue.substr(-1, 1);
+            console.log('last charcter', lastCharacter);
+
+
+            if (operation === '.') {
+                if ( (lastCharacter === '.') ) {
+                    // ungeültiger befehl wenn noch keine zahl feststeht.
+                    alert("Geben Sie eine Nachkomma Stelle ein");
+                    return;
+                }
+                if ( (lastCharacter === ' ')  ) {
+                    // ungeültiger befehl wenn noch keine zahl feststeht.
+                    alert("Bitte zuerst eine Zahl eingeben.");
+                    return;
+                }
+            }
+
+            if (isNotNumeric( operation )) {
+                // ist ein befehl
+
+                if (currentValue.length === 0) {
+                    // ungeültiger befehl wenn noch keine zahl feststeht.
+                    alert("Bitte zuerst eine Zahl eingeben.");
+                    return;
+                }
+
+
+                if ( (lastCharacter === '.') ) {
+                    // ungeültiger befehl wenn noch keine zahl feststeht.
+                    alert("Geben Sie eine Nachkomma Stelle ein");
+                    return;
+                }
+
+
+                // doppelte symbolfolgen verhindern, aber symbol änderung erlauben.
+                if (isNotNumeric( lastCharacter ) && lastCharacter !== '.') {
+                    let clickedSymbol = operation.substr(-2, 1);
+
+                    if (clickedSymbol !== '.') {
+
+                        let formelAnfang = currentValue.substr(0, currentValue.length - 2 );
+                        let formelRest = currentValue.substr(-1);
+
+                        document.getElementById('result').innerHTML = formelAnfang + clickedSymbol + formelRest;
+
+                        return;
+                    }
+                }
+            }
+
+            document.getElementById('result').innerHTML += operation;
+        }
+
+        function calculateResult() {
+            let container = document.getElementById('result')
+            let currentValue = container.innerHTML;
+            let lastCharacter = currentValue.substr(-1);
+
+            if (isNotNumeric( lastCharacter )) {
+                // der aktuell letzte Wert ist bereits auch ein Befehl
+                alert('Die Formel ist fehlerhaft. Berechnung nicht möglich.')
+                return;
+            }
+
+            container.innerHTML = eval(container.innerHTML);
+        }
+
+        function deleteLast() {
+            let container = document.getElementById('result');
+            if (container.innerHTML.endsWith(''))
+                container.innerHTML = container.innerHTML.slice(0, -1);
+        }
+
+        function clearResult() {
+            let container = document.getElementById('result');
+            container.innerHTML = '';
+        }
+    </script>
+</head>
+<body>
+
+
+<div id="resultArea">
+    <div id="result"></div>
+</div>
+
+
+<table>
+<tr>
+
+    <td onclick="deleteLast()">DEL</td>
+    <td onclick="clearResult()">CLR</td>
+</tr>
+<tr>
+    <td onclick="append0peration(7)">7</td>
+    <td onclick="append0peration(8)">8</td>
+    <td onclick="append0peration(9)">9</td>
+    <td onclick="append0peration(' / ')">/</td>
+</tr>
+
+<tr>
+
+    <td onclick ="append0peration(4)">4</td>
+    <td onclick ="append0peration(5)">5</td>
+    <td onclick ="append0peration(6)">6</td>
+    <td onclick ="append0peration(' * ')">x</td>
+</tr>
+
+<tr>
+    <td onclick ="append0peration(1)">1</td>
+    <td onclick ="append0peration(2)">2</td>
+    <td onclick ="append0peration(3)">3</td>
+    <td onclick ="append0peration(' + ')">+</td>
+</tr>
+<tr>
+    <td onclick ="append0peration(0)">0</td>
+    <td onclick ="append0peration('.')">,</td>
+    <td onclick="calculateResult() " id="result">=</td>
+    <td onclick ="append0peration(' - ')">-</td>
+</tr>
+</table>
+</body>
+</html>
